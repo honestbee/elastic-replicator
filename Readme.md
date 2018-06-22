@@ -17,13 +17,13 @@
 - Take snapshot:
 
     ```sh
-    API_URL=<my-api-url> BUCKET_NAME=<my-bucket-name> REGION=<my-region> make snapshot
+    ES_URL=<my-api-url> SNAPSHOT_BUCKET=<my-bucket-name> REGION=<my-region> make snapshot
     ```
 
 - Restore from latest snapshot:
 
     ```sh
-    API_URL=<my-api-url> BUCKET_NAME=<my-bucket-name> REGION=<my-region> make restore
+    ES_URL=<my-api-url> SNAPSHOT_BUCKET=<my-bucket-name> REGION=<my-region> make restore
     ```
 
 ## Kubernetes
@@ -32,21 +32,18 @@
 - Set up your environment:
 
     ```sh
-    export API_URL=http://es.example.com
+    export ES_URL=http://es.example.com
     export IMAGE_NAME=http://registry.example.com/es-snapper
-    export BUCKET_NAME=my-es-replication-bucket
+    export SNAPSHOT_BUCKET=my-es-replication-bucket
     ```
 
-- Take or restore snapshot:
+- List snapshots:
 
     ```sh
-    COMMAND=snapshot TSTAMP=`date +%s` envsubst < example/job.yml | kubectl create -f -
-    COMMAND=restore TSTAMP=`date +%s` envsubst < example/job.yml | kubectl create -f -
-    ```
-
-- To clean up old jobs:
-
-    ```sh
-    kubectl delete job -l job=es-snapshot-snapshot
-    kubectl delete job -l job=es-snapshot-restore
+    kubectl run es-restore --image quay.io/honestbee/elasticsearch-snapper:v1.6.3 \
+        -i --tty --rm --restart=Never -- \
+        list \
+        --bucket-name=$SNAPSHOT_BUCKET \
+        --region=$REGION \
+        --url=$ES_URL
     ```
