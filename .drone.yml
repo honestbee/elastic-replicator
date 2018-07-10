@@ -1,7 +1,7 @@
 pipeline:
   publish:
     image: plugins/docker
-    repo: registry.honestbee.com/elasticsearch-snapper
+    repo: quay.io/honestbee/elasticsearch-snapper-snapper
     registry: ${DOCKER_REGISTRY}
     secrets:
       - docker_username
@@ -13,7 +13,7 @@ pipeline:
         - master
   publish_tags:
     image: plugins/docker
-    repo: registry.honestbee.com/elasticsearch-snapper
+    repo: quay.io/honestbee/elasticsearch-snapper-snapper
     registry: ${DOCKER_REGISTRY}
     secrets:
       - docker_username
