@@ -1,3 +1,5 @@
+**This repository is deprecated, please use https://github.com/honestbee/esctl instead**
+
 # Elasticsearch Replicator
 
 ## Preconditions
